@@ -1,0 +1,179 @@
+body {
+    background: linear-gradient(135deg, #f0f4f8, #e1e8f0); /* Soft blue-gray gradient */
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Header */
+header {
+    background: #ffffff;
+    border-bottom: 1px solid #e0e6ed;
+}
+
+header h1 {
+    font-weight: 600;
+    color: #3498db; /* Light blue */
+}
+
+header a {
+    color: #7f8c8d; /* Soft gray */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+header a:hover {
+    color: #3498db;
+}
+
+/* Main Content */
+.container {
+    max-width: 700px; /* Narrower for focus */
+}
+
+p.text-muted {
+    font-size: 0.9rem;
+    color: #95a5a6; /* Light gray */
+}
+
+/* Form */
+form {
+    background: #ffffff;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(52, 152, 219, 0.15); /* Light blue shadow */
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #2c3e50; /* Darker gray-blue */
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #d5dce5; /* Light border */
+    background: #f9fbfd; /* Very light blue */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+    background: #ffffff;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #3498db, #5dade2); /* Light blue gradient */
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 12px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #2980b9, #4d96c8);
+    transform: translateY(-2px);
+}
+
+/* Spinner */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+    color: #3498db;
+}
+
+/* Alert */
+.alert {
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.alert-success {
+    background: #e8f6f0; /* Light green */
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.alert-danger {
+    background: #fceeee; /* Light red */
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+/* Graph Card */
+.card {
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.1);
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0;
+    background: #3498db;
+    font-weight: 500;
+}
+
+.card-body {
+    background: #f9fbfd; /* Very light blue */
+    padding: 15px;
+}
+
+.img-fluid {
+    border-radius: 8px;
+    max-height: 250px;
+}
+
+/* Toggle Button */
+.btn-secondary {
+    background: #95a5a6; /* Light gray */
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+/* Copy Button */
+.btn-info {
+    background: #5dade2; /* Light blue */
+    border: none;
+    border-radius: 8px;
+}
+
+.btn-info:hover {
+    background: #4d96c8;
+}
+
+.btn-success {
+    background: #81c784; /* Light green */
+}
+
+/* Footer */
+footer {
+    background: #ffffff;
+    border-top: 1px solid #e0e6ed;
+}
+
+footer p {
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #3498db;
+}

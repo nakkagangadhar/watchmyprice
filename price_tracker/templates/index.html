@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch My Price</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- jQuery, Popper.js, Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="bg-light py-3 shadow-sm">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h4 mb-0 text-primary">
+                    <i class="fas fa-tags mr-2"></i> Watch My Price
+                </h1>
+                <nav>
+                    <a href="#" class="text-muted mr-3"><i class="fas fa-home mr-1"></i> Home</a>
+                    <a href="#" class="text-muted"><i class="fas fa-info-circle mr-1"></i> About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+        <p class="text-center text-muted">Track prices effortlessly and get alerts!</p>
+
+        <form id="priceForm" class="mt-4 shadow p-4 rounded bg-white">
+            <div class="form-group">
+                <label for="url"><i class="fas fa-link mr-1 text-primary"></i> Product URL</label>
+                <input type="url" class="form-control" id="url" name="url" required placeholder="e.g., https://www.ajio.com/product" data-toggle="tooltip" title="Paste the product page URL here">
+            </div>
+            <div class="form-group">
+                <label for="expected_price"><i class="fas fa-rupee-sign mr-1 text-primary"></i> Expected Price (₹)</label>
+                <input type="number" class="form-control" id="expected_price" name="expected_price" required placeholder="Enter your target price" step="0.01" data-toggle="tooltip" title="Set your desired price">
+            </div>
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope mr-1 text-primary"></i> Email</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="e.g., you@example.com" data-toggle="tooltip" title="Receive alerts here">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-search mr-2"></i> Check Price
+            </button>
+        </form>
+
+        <div id="loading" class="text-center mt-3" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div id="result" class="alert mt-4" role="alert" style="display: none;"></div>
+        <button id="copyUrl" class="btn btn-info btn-sm mt-2" style="display: none;"><i class="fas fa-copy mr-1"></i> Copy URL</button>
+
+        <div id="graphSection" class="mt-4" style="display: none;">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <i class="fas fa-chart-line mr-2"></i> Price Trend
+                </div>
+                <div class="card-body bg-light">
+                    <img id="priceGraph" src="" alt="Price trend graph for the selected product" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <button id="toggleGraph" class="btn btn-secondary mt-2" style="display: none;">Hide Price Trend</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-auto">
+        <div class="container text-center">
+            <p class="text-muted mb-0">
+                © Watch My Price | Made by Team Sigma
+            </p>
+            <div class="mt-2">
+                <a href="#" class="text-muted mr-3"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-muted mr-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-muted"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('#priceForm').on('submit', function(event) {
+                event.preventDefault();
+                $('#loading').show();
+                $('#result, #graphSection, #copyUrl, #toggleGraph').hide();
+
+                let formData = {
+                    url: $('#url').val(),
+                    expected_price: $('#expected_price').val(),
+                    email: $('#email').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/check_price',
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function(data) {
+                        $('#loading').hide();
+                        const message = `Current price for <strong>${data.product_name}</strong> is <i class="fas fa-rupee-sign"></i>${data.current_price}. ${data.message}`;
+                        $('#result')
+                            .removeClass('alert-danger')
+                            .addClass('alert-success')
+                            .html(message)
+                            .show();
+                        $('#priceGraph').attr('src', data.graph_url);
+                        $('#graphSection, #copyUrl, #toggleGraph').show();
+                    },
+                    error: function(xhr) {
+                        $('#loading').hide();
+                        const errorMsg = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Error retrieving product price.';
+                        $('#result')
+                            .removeClass('alert-success')
+                            .addClass('alert-danger')
+                            .text(errorMsg)
+                            .show();
+                    }
+                });
+            });
+
+            $('#copyUrl').on('click', function() {
+                navigator.clipboard.writeText($('#url').val());
+                $(this).text('Copied!').addClass('btn-success').removeClass('btn-info');
+                setTimeout(() => $(this).text('Copy URL').addClass('btn-info').removeClass('btn-success'), 2000);
+            });
+
+            $('#toggleGraph').on('click', function() {
+                $('#graphSection').toggle();
+                $(this).text($('#graphSection').is(':visible') ? 'Hide Price Trend' : 'Show Price Trend');
+            });
+        });
+    </script>
+</body>
+</html>
